@@ -1,14 +1,13 @@
 package com.green.greengram.user;
 
 import com.green.greengram.common.model.ResultDto;
-import com.green.greengram.user.model.SignInPostReq;
-import com.green.greengram.user.model.SignInRes;
-import com.green.greengram.user.model.SignupPostReq;
+import com.green.greengram.user.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,6 +40,29 @@ public class UserController {
                 httpStatus(HttpStatus.OK).
                 resultMsg("로그인 성공").
                 resultData(res).
+                build();
+    }
+    @GetMapping
+    @Operation(summary = "팔로워 확인")
+    public ResultDto<UserInfoGetRes> userProfile(@ParameterObject @ModelAttribute UserInfoGetReq p){
+        UserInfoGetRes result = service.selUserProfile(p);
+
+        return ResultDto.<UserInfoGetRes>builder().
+                httpStatus(HttpStatus.OK).
+                resultMsg(HttpStatus.OK.toString()).
+                resultData(result).
+                build();
+    }
+
+    @PatchMapping("pic")
+    @Operation(summary = "프로필 사진 수정")
+    public ResultDto<String> patchProfilePic(@ModelAttribute UserProfilePatchReq p){
+        String result = service.updateUser(p);
+
+        return ResultDto.<String>builder().
+                httpStatus(HttpStatus.OK).
+                resultMsg("프로필 사진 변경 성공").
+                resultData(result).
                 build();
     }
 }

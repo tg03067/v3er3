@@ -45,6 +45,7 @@ public class FeedService {
                 pics(picDto.getFileNames()).
                 build();
     }
+
     public List<FeedGetRes> selFeed(FeedGetReq p){
         List<FeedGetRes> list = mapper.selFeed(p);
         if(list.isEmpty()){

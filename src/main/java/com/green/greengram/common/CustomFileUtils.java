@@ -11,7 +11,7 @@ import java.util.UUID;
 @Component
 @Data
 public class CustomFileUtils {
-    private final String uploadPath;
+    public final String uploadPath;
 
     public CustomFileUtils(@Value("${file.dir}") String uploadPath){
         this.uploadPath = uploadPath;
@@ -37,5 +37,19 @@ public class CustomFileUtils {
     public void transferTo (MultipartFile mf, String target) throws Exception{
         File saveFile = new File(uploadPath, target);
         mf.transferTo(saveFile);
+    }
+    public void deleteProfileFile(String absolutePath) throws Exception{
+        File folder = new File(absolutePath);
+        if(folder.exists() && folder.isDirectory()){
+            File[] files = folder.listFiles();
+
+            for(File f : files){
+                if(f.isDirectory()){
+                    deleteProfileFile(f.getAbsolutePath());
+                } else {
+                    f.delete();
+                }
+            }
+        }
     }
 }
